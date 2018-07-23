@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import AddDocument from './AddDocument';
 import DeleteDocument from './DeleteDocument';
+import Search from './Search';
 
 /* Main Component */
 class Documents extends Component {
@@ -11,6 +12,7 @@ class Documents extends Component {
     super();
     this.state = {
         documents: [],
+        search: ''
     }
   }
 
@@ -54,10 +56,20 @@ class Documents extends Component {
       this.setState({ documents: array});
   }
 
+  handleSearch(documents){
+    this.setState({documents:documents});
+  }
+
   render() {
     return (
         <div>
             <AddDocument onAdd={this.handleAddDocument.bind(this)} />
+
+            <hr />
+
+            <Search onSearch={this.handleSearch.bind(this)} />
+
+            <hr />
 
             <h2>Your files</h2>
             <small>Allowed types: png, jpg, pdf, doc, docx</small>
