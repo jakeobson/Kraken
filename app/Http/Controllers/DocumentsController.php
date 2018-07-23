@@ -12,9 +12,9 @@ class DocumentsController extends Controller
     }
 
     public function store(Request $request){
-        $document = Document::upload($request->all());
+        $document = Document::upload($request);
 
-        return response()->json($document, 201);
+        return $document;
     }
 
     public function delete(Document $document){
