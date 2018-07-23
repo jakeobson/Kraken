@@ -18,7 +18,7 @@ class CreateDocumentsTable extends Migration
             $table->string('filename', 255);
             $table->string('path', 255);
             $table->string('extension', 8);
-            $table->boolean('deleted')->default(0);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
