@@ -17,7 +17,7 @@ class Document extends Model
 
             $extension = $file->extension();
 
-            $name = date('Ymd').'-'.time();
+            $name = date('Ymd').'-'.time().'.'.$extension;
 
             $path = $file->storeAs('documents', $name);
 

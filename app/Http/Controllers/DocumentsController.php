@@ -12,9 +12,14 @@ class DocumentsController extends Controller
     }
 
     public function store(Request $request){
-        $document = Document::upload($request);
+        $request->validate([
+            'document' => 'required|mimes:png,jpg,pdf,doc,docx|max:5120'
+        ]);
 
-        return $document;
+
+        $result = Document::upload($request);
+
+        return $result;
     }
 
     public function delete(Document $document){
