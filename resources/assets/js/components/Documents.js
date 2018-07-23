@@ -75,6 +75,11 @@ class Documents extends Component {
             <small>Allowed types: png, jpg, pdf, doc, docx</small>
             <small>Max size is 5MB</small>
               <table>
+                  <thead>
+                      <th>Filename</th>
+                      <th>Extension</th>
+                      <th></th>
+                  </thead>
                   <tbody>
                 { this.renderDocuments() }
                 </tbody>

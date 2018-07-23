@@ -55877,6 +55877,21 @@ var Documents = function (_Component) {
                     'table',
                     null,
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'thead',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Filename'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                            'th',
+                            null,
+                            'Extension'
+                        ),
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('th', null)
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'tbody',
                         null,
                         this.renderDocuments()
