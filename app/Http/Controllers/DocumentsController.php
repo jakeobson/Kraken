@@ -26,7 +26,7 @@ class DocumentsController extends Controller
     public function search(Request $request){
         $search = $request->get('search');
 
-        return DB::table('documents')->where('filename', 'LIKE', '%'.$search.'%')->orWhere('extension', $search)->get();
+        return Document::where('filename', 'LIKE', '%'.$search.'%')->orWhere('extension', $search)->get();
     }
 
     public function delete(Document $document){
