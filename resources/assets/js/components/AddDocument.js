@@ -6,7 +6,8 @@ export default class AddDocument extends Component
    constructor() {
       super();
       this.state ={
-        document: ''
+        document: '',
+        file: null
       }
       this.onFormSubmit = this.onFormSubmit.bind(this)
       this.onChange = this.onChange.bind(this)
@@ -14,10 +15,10 @@ export default class AddDocument extends Component
     }
     onFormSubmit(e){
       e.preventDefault()
-      this.fileUpload(this.state.document);
+      this.fileUpload(this.state.file);
     }
     onChange(e) {
-        this.setState({document: e.target.files[0]});
+        this.setState({file: e.target.files[0]});
     }
     fileUpload(document){
 
@@ -25,10 +26,11 @@ export default class AddDocument extends Component
         formData.append('document', document);
 
         axios.post('/api/documents', formData, {headers: {'Content-Type': 'multipart/form-data'}})
-        .then(response => {
-            var array = documents.push(response);
-            this.setState({documents: array});
+        .then((response) => {
+            this.props.onAdd(response.data);
         });
+
+
     }
 
    render()

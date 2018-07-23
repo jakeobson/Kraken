@@ -4,20 +4,17 @@ import ReactDOM from 'react-dom';
 /* Main Component */
 export default class DeleteDocument extends Component {
 
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
   }
 
   deleteDocument(document){
+      console.log(document);
     fetch( '/api/documents/' + document.id,
       { method: 'delete' })
       .then(response => {
-        /* Duplicate the array and filter out the item to be deleted */
-        var array = this.state.documents.filter(function(item) {
-            return item !== document
-        });
 
-        this.setState({ documents: array});
+        this.props.onDelete(document);
 
     });
   }
@@ -25,7 +22,7 @@ export default class DeleteDocument extends Component {
   render() {
    /* Some css code has been removed for brevity */
     return (
-        <button onClick={() => this.deleteDocument(document)} className="btn btn-danger btn-sm"><i className="fa fa-times"></i></button>
+        <button onClick={() => this.deleteDocument(this.props.document)} className="btn btn-danger btn-sm"><i className="fa fa-times"></i></button>
     );
   }
 }

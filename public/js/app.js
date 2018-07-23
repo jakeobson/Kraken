@@ -55777,7 +55777,6 @@ var Documents = function (_Component) {
     function Documents() {
         _classCallCheck(this, Documents);
 
-        //Initialize the state in the constructor
         var _this = _possibleConstructorReturn(this, (Documents.__proto__ || Object.getPrototypeOf(Documents)).call(this));
 
         _this.state = {
@@ -55785,69 +55784,83 @@ var Documents = function (_Component) {
         };
         return _this;
     }
-    /*componentDidMount() is a lifecycle method
-     * that gets called after the component is rendered
-     */
-
 
     _createClass(Documents, [{
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this2 = this;
 
-            /* fetch API in action */
             fetch('/api/documents').then(function (response) {
                 return response.json();
             }).then(function (documents) {
-                //Fetched product is stored in the state
                 _this2.setState({ documents: documents });
             });
         }
     }, {
-        key: 'renderProducts',
-        value: function renderProducts() {
+        key: 'renderDocuments',
+        value: function renderDocuments() {
+            var _this3 = this;
+
             return this.state.documents.map(function (document) {
-                return (
-                    /* When using list you need to specify a key
-                     * attribute that is unique for each list item
-                    */
+                return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'tr',
+                    { key: document.id },
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                        'tr',
-                        { key: document.id },
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'td',
-                            null,
-                            document.filename
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'td',
-                            null,
-                            document.extension
-                        ),
-                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
-                            'td',
-                            null,
-                            __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__DeleteDocument__["a" /* default */], null)
-                        )
+                        'td',
+                        null,
+                        document.filename
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        null,
+                        document.extension
+                    ),
+                    __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                        'td',
+                        null,
+                        __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_3__DeleteDocument__["a" /* default */], { document: document, onDelete: _this3.handleRemoveDocument.bind(_this3) })
                     )
                 );
             });
         }
     }, {
-        key: 'deleteDocument',
-        value: function deleteDocument() {}
+        key: 'handleAddDocument',
+        value: function handleAddDocument(document) {
+
+            var array = this.state.documents.concat(document);
+
+            this.setState({ documents: array });
+        }
+    }, {
+        key: 'handleRemoveDocument',
+        value: function handleRemoveDocument(document) {
+            var array = this.state.documents.filter(function (item) {
+                return item !== document;
+            });
+
+            this.setState({ documents: array });
+        }
     }, {
         key: 'render',
         value: function render() {
-            /* Some css code has been removed for brevity */
             return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                 'div',
                 null,
-                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__AddDocument__["a" /* default */], null),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__AddDocument__["a" /* default */], { onAdd: this.handleAddDocument.bind(this) }),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'h2',
                     null,
                     'Your files'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'small',
+                    null,
+                    'Allowed types: png, jpg, pdf, doc, docx'
+                ),
+                __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
+                    'small',
+                    null,
+                    'Max size is 5MB'
                 ),
                 __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                     'table',
@@ -55855,7 +55868,7 @@ var Documents = function (_Component) {
                     __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
                         'tbody',
                         null,
-                        this.renderProducts()
+                        this.renderDocuments()
                     )
                 )
             );
@@ -55900,7 +55913,8 @@ var AddDocument = function (_Component) {
         var _this = _possibleConstructorReturn(this, (AddDocument.__proto__ || Object.getPrototypeOf(AddDocument)).call(this));
 
         _this.state = {
-            document: ''
+            document: '',
+            file: null
         };
         _this.onFormSubmit = _this.onFormSubmit.bind(_this);
         _this.onChange = _this.onChange.bind(_this);
@@ -55912,12 +55926,12 @@ var AddDocument = function (_Component) {
         key: 'onFormSubmit',
         value: function onFormSubmit(e) {
             e.preventDefault();
-            this.fileUpload(this.state.document);
+            this.fileUpload(this.state.file);
         }
     }, {
         key: 'onChange',
         value: function onChange(e) {
-            this.setState({ document: e.target.files[0] });
+            this.setState({ file: e.target.files[0] });
         }
     }, {
         key: 'fileUpload',
@@ -55928,8 +55942,7 @@ var AddDocument = function (_Component) {
             formData.append('document', document);
 
             __WEBPACK_IMPORTED_MODULE_1_axios___default.a.post('/api/documents', formData, { headers: { 'Content-Type': 'multipart/form-data' } }).then(function (response) {
-                var array = documents.push(response);
-                _this2.setState({ documents: array });
+                _this2.props.onAdd(response.data);
             });
         }
     }, {
@@ -55983,10 +55996,10 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var DeleteDocument = function (_Component) {
   _inherits(DeleteDocument, _Component);
 
-  function DeleteDocument() {
+  function DeleteDocument(props) {
     _classCallCheck(this, DeleteDocument);
 
-    return _possibleConstructorReturn(this, (DeleteDocument.__proto__ || Object.getPrototypeOf(DeleteDocument)).call(this));
+    return _possibleConstructorReturn(this, (DeleteDocument.__proto__ || Object.getPrototypeOf(DeleteDocument)).call(this, props));
   }
 
   _createClass(DeleteDocument, [{
@@ -55994,13 +56007,10 @@ var DeleteDocument = function (_Component) {
     value: function deleteDocument(document) {
       var _this2 = this;
 
+      console.log(document);
       fetch('/api/documents/' + document.id, { method: 'delete' }).then(function (response) {
-        /* Duplicate the array and filter out the item to be deleted */
-        var array = _this2.state.documents.filter(function (item) {
-          return item !== document;
-        });
 
-        _this2.setState({ documents: array });
+        _this2.props.onDelete(document);
       });
     }
   }, {
@@ -56012,7 +56022,7 @@ var DeleteDocument = function (_Component) {
       return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(
         'button',
         { onClick: function onClick() {
-            return _this3.deleteDocument(document);
+            return _this3.deleteDocument(_this3.props.document);
           }, className: 'btn btn-danger btn-sm' },
         __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement('i', { className: 'fa fa-times' })
       );

@@ -9,55 +9,62 @@ class Documents extends Component {
   constructor() {
 
     super();
-    //Initialize the state in the constructor
     this.state = {
         documents: [],
     }
   }
-  /*componentDidMount() is a lifecycle method
-   * that gets called after the component is rendered
-   */
+
   componentDidMount() {
-    /* fetch API in action */
     fetch('/api/documents')
         .then(response => {
             return response.json();
         })
         .then(documents => {
-            //Fetched product is stored in the state
             this.setState({ documents });
         });
   }
 
- renderProducts() {
+
+
+ renderDocuments() {
     return this.state.documents.map(document => {
         return (
-            /* When using list you need to specify a key
-             * attribute that is unique for each list item
-            */
             <tr key={document.id} >
                 <td>{ document.filename }</td>
                 <td>{ document.extension }</td>
-                <td><DeleteDocument /></td>
+                <td><DeleteDocument document={document} onDelete={this.handleRemoveDocument.bind(this)} /></td>
             </tr>
         );
     })
   }
 
-  deleteDocument(){
+  handleAddDocument(document){
 
+    var array = this.state.documents.concat(document);
+
+    this.setState({documents: array});
+  }
+
+  handleRemoveDocument(document){
+    var array = this.state.documents.filter(function(item) {
+        return item !== document
+      });
+
+
+      this.setState({ documents: array});
   }
 
   render() {
-   /* Some css code has been removed for brevity */
     return (
         <div>
-            <AddDocument />
+            <AddDocument onAdd={this.handleAddDocument.bind(this)} />
 
             <h2>Your files</h2>
+            <small>Allowed types: png, jpg, pdf, doc, docx</small>
+            <small>Max size is 5MB</small>
               <table>
                   <tbody>
-                { this.renderProducts() }
+                { this.renderDocuments() }
                 </tbody>
               </table>
             </div>
