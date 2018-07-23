@@ -60,17 +60,10 @@ class Documents extends Component {
     this.setState({documents:documents});
   }
 
-  render() {
-    return (
-        <div>
-            <AddDocument onAdd={this.handleAddDocument.bind(this)} />
-
-            <hr />
-
-            <Search onSearch={this.handleSearch.bind(this)} />
-
-            <hr />
-
+  renderTable(){
+      if(this.state.documents.length > 0){
+          return (
+              <div>
             <h2>Your files</h2>
             <small>Allowed types: png, jpg, pdf, doc, docx</small>
             <small>Max size is 5MB</small>
@@ -84,8 +77,25 @@ class Documents extends Component {
                 { this.renderDocuments() }
                 </tbody>
               </table>
-            </div>
+              </div>
+          );
+      }
+  }
 
+  render() {
+    return (
+        <div>
+            <AddDocument onAdd={this.handleAddDocument.bind(this)} />
+
+            <hr />
+
+            <Search onSearch={this.handleSearch.bind(this)} />
+
+            <hr />
+
+            { this.renderTable() }
+
+        </div>
     );
   }
 }
