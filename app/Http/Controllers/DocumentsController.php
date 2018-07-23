@@ -8,18 +8,19 @@ use App\Document;
 class DocumentsController extends Controller
 {
     public function index(){
-        $documents = Document::all();
-
-        return $documents;
+        return Document::all();
     }
 
-    public function store(){
+    public function store(Request $request){
+        $document = Document::upload($request->all());
 
+        return response()->json($document, 201);
     }
 
     public function delete(Document $document){
+
         $document->delete();
 
-        return response()->json(['status' => 'ok'], 200);
+        return response()->json(null, 204);
     }
 }
