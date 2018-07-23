@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Document;
+use DB;
 
 class DocumentsController extends Controller
 {
@@ -20,6 +21,12 @@ class DocumentsController extends Controller
         $result = Document::upload($request);
 
         return $result;
+    }
+
+    public function search(Request $request){
+        $search = $request->get('search');
+
+        return DB::table('documents')->where('filename', 'LIKE', '%'.$search.'%')->orWhere('extension', $search)->get();
     }
 
     public function delete(Document $document){

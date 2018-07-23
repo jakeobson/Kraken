@@ -22,4 +22,4 @@ Route::get('/documents', 'DocumentsController@index')->name('documents.get');
 Route::post('/documents', 'DocumentsController@store')->name('documents.store');
 Route::delete('/documents/{document}', 'DocumentsController@delete')->name('documents.delete');
 
-Route::get('/documents/{search}', 'DocumentsController@search')->name('documents.search');
+Route::post('/documents/search', 'DocumentsController@search')->name('documents.search');
