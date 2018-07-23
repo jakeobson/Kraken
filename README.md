@@ -4,3 +4,5 @@ The project was created using ReactJs and Laravel framework. The backend logic s
 It has been created based on migrations.
 All components are available in resources/assets/components.
 The project was served using the laravel homestead.
+
+# Finish time : 23.07 16:01 CEST
